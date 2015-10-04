@@ -1,0 +1,66 @@
+# Site settings
+title: Hwt Blog
+header-img: img/home-bg.jpg
+email: 1320238094@qq.com
+description: "想成为一名优秀的web前端工程师。@Hwt吴涛的博客主页"
+baseurl: ""
+url: "http://taotao1428.github.io"
+
+
+# SNS settings
+RSS: false
+weibo_username:     hewutao
+# zhihu_username:     huxpro
+github_username:    taotao1428
+#twitter_username:  huxpro
+# facebook_username:  huxpro
+
+
+# Build settings
+highlighter: pygments
+permalink: pretty
+paginate: 10
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+anchorjs: true      # if you want to customize anchor. check out line:129 of `post.html`
+
+# Markdown settings
+# replace redcarpet to kramdown,
+# although redcarpet can auto highlight code, the lack of header-id make the catalog impossible, so I switch to kramdown
+# document: http://jekyllrb.com/docs/configuration/#kramdown
+markdown: kramdown
+kramdown:
+  input: GFM        # use Github Flavored Markdown !important
+
+
+# Duoshuo settings
+# please set your own DuoShuo account in `post.html` and `about.html`
+useDuoshuo: true    # use both Comment and Share
+useShare: true      # use Comment only. seeing the Share component is depend on Comment so we can NOT use share only.
+
+
+# Todo: Analysis settings
+# Please set your own analysis account in `head.html`(Baidu) and `default.html`(QQ)
+useBaiduAnalysis: true
+useTencentAnalysis: true
+useGoogleAnalysis: true     # TODO
+
+
+# Sidebar settings
+sidebar: true
+sidebar-featured-tags: true
+sidebar-about-description: "写写代码，看看产品。世界那么大，多出去看看。"
+sidebar-avatar: /img/avatar-hwt.jpg     # use absolute URL.
+
+# Friends
+# friends: [
+#     {
+#         title: "天镶的博客",
+#         href: "http://lingyu.wang/"
+#     },{
+#         title: "Hux的自留地",
+#         href: "http://Huxpro.github.io"
+#     },{
+#         title: "SmdCn's Blog",
+#         href: "http://blog.smdcn.net"
+#     }
+# ]
