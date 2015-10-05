@@ -52,15 +52,9 @@ sidebar-about-description: "写写代码，看看产品。世界那么大，多�
 sidebar-avatar: /img/avatar-hwt.jpg     # use absolute URL.
 
 # Friends
-# friends: [
-#     {
-#         title: "天镶的博客",
-#         href: "http://lingyu.wang/"
-#     },{
-#         title: "Hux的自留地",
-#         href: "http://Huxpro.github.io"
-#     },{
-#         title: "SmdCn's Blog",
-#         href: "http://blog.smdcn.net"
-#     }
-# ]
+friends: [
+    {
+        title: "Hux的自留地",
+        href: "http://Huxpro.github.io"
+    }
+]
