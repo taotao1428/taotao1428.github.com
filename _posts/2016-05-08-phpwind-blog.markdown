@@ -11,6 +11,7 @@ tags:
 
 
 #对windphp-9.0.1的代码解析
+
 ##今天我看的文件是global.js
 
 首先他定义了公共方法Wind.Util
