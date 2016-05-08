@@ -23,12 +23,12 @@ tags:
 * 添加数据`sublock=true`，暂时还不知道这个的用处
 
 ```javascript
-    ajaxBtnDisable : function(btn){
-    	    //按钮提交不可用
-		var textnode = document.createTextNode('中...');
-		btn[0].appendChild(textnode);
-		btn.prop('disabled', true).addClass('disabled').data('sublock', true);
-	},
+ajaxBtnDisable : function(btn){
+	//按钮提交不可用
+	var textnode = document.createTextNode('中...');
+	btn[0].appendChild(textnode);
+	btn.prop('disabled', true).addClass('disabled').data('sublock', true);
+},
 ```
 
 
