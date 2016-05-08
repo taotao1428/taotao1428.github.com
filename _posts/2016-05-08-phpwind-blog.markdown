@@ -21,6 +21,7 @@ tags:
 * 给btn添加属性`disabled=ture`，使其不能在触发事件
 * 给btn添加样式类`disabled`，
 * 添加数据`sublock=true`，暂时还不知道这个的用处
+
 ```javascript
     ajaxBtnDisable : function(btn){
     	    //按钮提交不可用
