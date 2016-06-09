@@ -10,9 +10,9 @@ tags:
 ---
 
 
-#页面元素拖动的实现
+# 页面元素拖动的实现
 
-##通过写jq扩展函数的方式实现
+## 通过写jq扩展函数的方式实现
 
 扩展一个名为drag的扩展函数
 
@@ -52,9 +52,9 @@ $self.mousedown(function(e){
 3.监听mouseup事件，将`startDrag`设置为`false`
 
 ```javascript
-	$(document).mouseup(function(){
-		startDrag = false;
-	})
+$(document).mouseup(function(){
+	startDrag = false;
+})
 ```
 
 4.监听mousemove事件，执行函数
@@ -77,7 +77,7 @@ $(document).mousemove(function(e){
 })
 ```
 
-##全部代码
+## 全部代码
 
 ```javascript
 $.fn.extend({
