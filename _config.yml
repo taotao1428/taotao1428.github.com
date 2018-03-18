@@ -20,7 +20,7 @@ github_username:    taotao1428
 highlighter: pygments
 permalink: pretty
 paginate: 10
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md", "portfolio"]
 anchorjs: true      # if you want to customize anchor. check out line:129 of `post.html`
 
 # Markdown settings
