@@ -6,7 +6,7 @@ date:       2016-05-08
 author:     "Hwt"
 header-img: "img/post-bg-js-version.jpg"
 tags:
-    - 生活
+    - js
 ---
 
 
