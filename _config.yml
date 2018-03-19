@@ -41,7 +41,7 @@ useGoogleAnalysis: true     # TODO
 
 
 # Sidebar settings
-sidebar: false
+sidebar: true
 sidebar-featured-tags: true
 sidebar-about-description: "写写代码，看看产品。世界那么大，多出去看看。"
 sidebar-avatar: /img/avatar-hwt.jpg     # use absolute URL.
