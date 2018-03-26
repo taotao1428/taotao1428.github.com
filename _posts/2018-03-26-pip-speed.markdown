@@ -1,0 +1,29 @@
+---
+layout:     post
+title:      "提高pip下载模块的速度"
+subtitle:   "使用镜像下载"
+date:       2018-03-26
+author:     "Hwt"
+header-img: "img/post-bg-js-version.jpg"
+tags:
+    - 笔记
+---
+
+昨天在安装`statsmodels`模块时，发现下载速度很慢，导致出现`timeoutError`，所以要提高下载速度。
+
+### 镜像
+* 豆瓣：<http://pypi.douban.com/simple/>
+* 清华：<https://pypi.tuna.tsinghua.edu.cn/simple>
+
+### 使用镜像
+
+##### 临时使用
+`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple statsmodels`   
+这样就会从清华这边的镜像去安装statsmodels库。
+
+##### 永久修改
+windows下，直接在user目录中创建一个pip目录，如：C:\Users\xx\pip，新建文件pip.ini，内容如下  
+```
+ [global]
+ index-url = https://pypi.tuna.tsinghua.edu.cn/simple
+```
