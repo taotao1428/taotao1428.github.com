@@ -17,13 +17,13 @@ tags:
 
 ### 使用镜像
 
-**临时使用**
+**临时使用**  
 ```
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple statsmodels
 ```
 这样就会从清华这边的镜像去安装statsmodels库。
 
-**永久修改**
+**永久修改**  
 windows下，直接在user目录中创建一个pip目录，如：C:\Users\xx\pip，新建文件pip.ini，内容如下  
 ```
 [global]
