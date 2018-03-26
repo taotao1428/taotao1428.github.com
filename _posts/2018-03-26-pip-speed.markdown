@@ -18,7 +18,9 @@ tags:
 ### 使用镜像
 
 #### 临时使用
-`pip install -i https://pypi.tuna.tsinghua.edu.cn/simple statsmodels`   
+```
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple statsmodels
+```   
 这样就会从清华这边的镜像去安装statsmodels库。
 
 #### 永久修改
