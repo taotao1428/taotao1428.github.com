@@ -4,7 +4,7 @@ title:      "本地安装多个mysql，配置主从复制"
 subtitle:   "免安装mysql采坑"
 date:       2019-01-19
 author:     "Hwt"
-header-img: "img/mysql.png"
+header-img: "img/bg-js-version.png"
 tags:
     - 笔记
 ---
@@ -16,7 +16,7 @@ tags:
 
 ### 1. 下载
 [下载地址](https://dev.mysql.com/downloads/mysql/5.7.html#downloads)，解压即可
-
+![mysql](/img/mysql.png)
 ### 2. 书写配置文件
 在解压目录下新建文件`my.ini`，写入一下内容
 ```text
