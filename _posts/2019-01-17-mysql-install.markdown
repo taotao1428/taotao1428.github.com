@@ -4,7 +4,7 @@ title:      "本地安装多个mysql，配置主从复制"
 subtitle:   "免安装mysql采坑"
 date:       2019-01-19
 author:     "Hwt"
-header-img: "img/bg-js-version.png"
+header-img: "img/post-bg-js-version.jpg"
 tags:
     - 笔记
 ---
