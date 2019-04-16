@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "设计原则-单一责任原则"
-subtitle:   "思考对接口，类，抽象类的试用"
+subtitle:   "思考对接口，类，抽象类的适用"
 date:       2019-04-15
 author:     "Hwt"
 header-img: "img/post-bg-js-version.jpg"
@@ -100,6 +100,3 @@ public abstract class PathFilter {
 }
 
 ```
-
-
-
