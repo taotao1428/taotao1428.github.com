@@ -54,13 +54,13 @@ public interface Chart {
     void display();
 }
 
-public class PieChart implement Chart {
+public class PieChart implements Chart {
     public void display() {
         System.out.println("PieChart");
     }
 }
 
-public class BarChart implement Chart {
+public class BarChart implements Chart {
     public void display() {
         System.out.println("BarChart");
     }

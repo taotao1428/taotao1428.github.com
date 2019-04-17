@@ -59,7 +59,7 @@ public interface UserService {
 // --------------
 
 /** 实现类 */
-public class DefaultUserService implement UserService {
+public class DefaultUserService implements UserService {
     private UserDao userDao; // 将需要数据访问的功能委托给UserDao
     public DefaultUserService(UserDao userDao) {
         this.userDao = userDao;
