@@ -42,7 +42,7 @@ class Person {
 }
 ```
 
-![person-bike-1](img/in-post/dependence-inversion/person-bike-1.png)
+![person-bike-1](/img/in-post/dependence-inversion/person-bike-1.png)
 
 #### 改进
 如果使用不同的交通工具将需要修改代码。所以可以将出行工具抽象成一个接口。而用户依赖接口，而不是直接依赖实现类
@@ -75,5 +75,5 @@ public class Bike implements Drivable {
 
 ```
 
-![person-bike-1](img/in-post/dependence-inversion/person-bike-2.png)
+![person-bike-1](/img/in-post/dependence-inversion/person-bike-2.png)
 
