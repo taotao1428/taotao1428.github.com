@@ -2,7 +2,7 @@
 layout:     post
 title:      "设计原则-依赖倒置"
 subtitle:   "让类可以灵活的配置依赖"
-date:       2019-04-17
+date:       2019-04-21
 author:     "Hwt"
 header-img: "img/post-bg-js-version.jpg"
 tags:
