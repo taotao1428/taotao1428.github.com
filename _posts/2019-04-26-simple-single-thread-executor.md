@@ -130,7 +130,7 @@ private volatile int state = NOT_START; // 执行器的状态
 1. 将准备好的定时任务移到taskQueue中
 2. 从taskQueue中poll一个任务，如果存在任务，则返回；否者，执行下一步
 3. 从scheduledTaskQueue中peek一个任务，如果返回null，则设置一个默认的timeout时间；如果不返回null，则timeout为该任务准备好需等待的时间。
-4. 执行taskQueue.poll(timeout, TimeUnit.NANOSECOND) 获得任务。如果返回不为null，返回结果；否者，重新会1；
+4. 执行taskQueue.poll(timeout, TimeUnit.NANOSECOND) 获得任务。如果返回不为null，返回结果；否者，重新回到1；
 
 ```java
 private Runnable takeTask() {
