@@ -1,0 +1,74 @@
+# Paxos
+
+paxos是一种分布式一致性算法。用于让多台服务器认可一个值。
+
+
+
+[参考](https://blog.csdn.net/cnh294141800/article/details/53768464)
+
+[一篇介绍Paxos的有趣文章](http://ifeve.com/译《the-part-time-parliament》-终于读懂了paxos协议！/)
+
+
+
+### 两个角色
+
+#### 1. Proposer
+
+值的提交者。假定存在多个Proposer对集群提交数值，Proposer也可能出问题。
+
+
+
+#### 2. Acceptor
+
+值的接收者。假定集群中存在多个Acceptor，并且Acceptor随时可能因为各种原因离开集群
+
+
+
+### 算法逻辑
+
+![](https://img-blog.csdn.net/20161220201958578?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvY25oMjk0MTQxODAw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center)
+
+上面的步骤为Proposer向Acceptor提交一个值value的过程，下面对步骤进行详细说明：
+
+
+
+1. Proposer需要创建一个Proposal`n`，**该Proposal应该要大于Proposer已知的最大Proposal，否者发送出去没有意义**
+2. Proposer向所有Acceptor发送请求`Prepare(n)`
+3. Acceptor接收到Proposal`n`之后，如果**n大于本地的minProposal**，那么将会更新`minProposal=n`。并返回Acceptor已经储存的AcceptedValue和AcceptedProposal，如果之前没有接收值，返回null；
+4. Proposer接收到**半数以上**的响应后，Proposer会向所有Acceptor发送accept请求。Proposer在发送请求前会做一个更新操作，**如果同意响应中包含AcceptedValue和AcceptedProposal，那么将选择一个最大AcceptedProposal对应的AcceptedValue作为自己的value**。然后发送请求`Accept(n,value)`。
+5. Acceptor接收到`(n,value)`之后，如果Proposal`n`大于或等于minProposal，那么它将会把更新本地的`acceptedProposal=n`和`acceptedValue=value`。返回minProposal
+6. 如果Proposer接收到**任何拒绝（minProposal > n）**，将会回到第1步，**发起新一轮的请求**。**否者说明一个统一的值已经设置好了**。
+
+
+
+#### Prepare请求的作用
+
+Prepare的请求有两个作用
+
+1. 更新Acceptor的minProposal，让Acceptor拒绝过期的Accept请求。结合“需要一半以上的Acceptor响应Prepare请求才会发送Accept请求”的特点，让Prepare有点像锁，但是这种锁可以被覆盖。
+2. 获得已经被接收的最新值。Paxos算法的目的是一致性，使用已经被接受的值更加容易让集群收敛。从某种意义上来看每个Proposer最终的目的不是为了让集群收敛于自己的值，而是为了集群更快收敛。
+
+
+
+#### 为什么说有一半以上Acceptor接受了Accept(N,VALUE)请求，集群就稳定了？
+
+1. 首先一半以上Acceptor成功接受了Accept请求，**说明此时少于一半的Acceptor的minProposal被设置成比N更高**，也就是说此时集群中没有比N更大的AcceptedProposal了。因为如果需要设置AcceptedProposal比N更大的值，**需要先将一半以上的Acceptor的minProposal设置为比N更大的值**，这与一半以上Acceptor接受Accept(N, VALUE)请求的前提相矛盾，所以不成立。
+2. 由1可以知道集群中没有比N更大的AcceptedProposal了，并且当前集群中一半以上的Acceptor设置了AcceptedProposal=N，AcceptedValue=VALUE，所以当其他Proposer在**第4步**的时候最终**都将会把自己的vaule设置VALUE**。因此最终集群将收敛于VALUE值。
+
+
+
+
+
+### Paxos的用途
+
+zookeeper，Chubby等应用了Paxos算法
+
+#### 1. 用于leader的选举
+
+竞选的服务器为Proposer，它最开始提交的value为自己的id。最终集群将收敛于一个id。该id对应的服务器称为leader。当leader出问题的时候，会自动清除Acceptor中的AcceptedValue和AcceptedProposal，这样可以让其他follower开始竞选leader。
+
+
+
+#### 2. 分布式的分布式锁
+
+与leader选举类似，当时释放锁的时候也需要将主动清除Acceptor中的值。可以有效的避免单点失败，虽然加锁速度方面会较弱。
