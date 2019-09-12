@@ -1,3 +1,13 @@
+---
+layout:     post
+title:      "Raft"
+subtitle:   ""
+date:       2019-08-30
+author:     "Hwt"
+header-img: "img/post-bg-js-version.jpg"
+tags:
+    - 分布式算法
+---
 # Raft算法
 
 另一个使用比较多的分布式算法。redis中的leader就是使用了Raft算法。

@@ -1,3 +1,14 @@
+---
+layout:     post
+title:      "Paxos"
+subtitle:   ""
+date:       2019-08-30
+author:     "Hwt"
+header-img: "img/post-bg-js-version.jpg"
+tags:
+    - 分布式算法
+---
+
 # Paxos
 
 paxos是一种分布式一致性算法。用于让多台服务器认可一个值。
