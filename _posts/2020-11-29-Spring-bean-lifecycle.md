@@ -61,21 +61,21 @@ BeanDefinition中最重要的三个信息
 二、通过`org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation`处理，如果获得bean对象，将直接返回
 
 ```java
-		Object bean = null;
-		if (!Boolean.FALSE.equals(mbd.beforeInstantiationResolved)) {
-			// Make sure bean class is actually resolved at this point.
-			if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
-				Class<?> targetType = determineTargetType(beanName, mbd);
-				if (targetType != null) {
-					bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
-					if (bean != null) {
-						bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
-					}
-				}
-			}
-			mbd.beforeInstantiationResolved = (bean != null);
-		}
-		return bean;
+Object bean = null;
+if (!Boolean.FALSE.equals(mbd.beforeInstantiationResolved)) {
+    // Make sure bean class is actually resolved at this point.
+    if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
+        Class<?> targetType = determineTargetType(beanName, mbd);
+        if (targetType != null) {
+            bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
+            if (bean != null) {
+                bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
+            }
+        }
+    }
+    mbd.beforeInstantiationResolved = (bean != null);
+}
+return bean;
 ```
 
 
@@ -87,14 +87,14 @@ BeanDefinition中最重要的三个信息
 四、`org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition`方法处理RootBeanDefinition对象。**每个RootBeanDefinition仅会被处理一次**
 
 ```java
-	protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
-		for (BeanPostProcessor bp : getBeanPostProcessors()) {
-			if (bp instanceof MergedBeanDefinitionPostProcessor) {
-				MergedBeanDefinitionPostProcessor bdp = (MergedBeanDefinitionPostProcessor) bp;
-				bdp.postProcessMergedBeanDefinition(mbd, beanType, beanName);
-			}
-		}
-	}
+protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
+    for (BeanPostProcessor bp : getBeanPostProcessors()) {
+        if (bp instanceof MergedBeanDefinitionPostProcessor) {
+            MergedBeanDefinitionPostProcessor bdp = (MergedBeanDefinitionPostProcessor) bp;
+            bdp.postProcessMergedBeanDefinition(mbd, beanType, beanName);
+        }
+    }
+}
 ```
 
 
@@ -126,24 +126,24 @@ if (!continueWithPropertyPopulation) {
 六、根据属性的名称或类型创建PropertyValue对象，为后面给bean对象注入属性使用。
 
 ```java
-		PropertyValues pvs = (mbd.hasPropertyValues() ? mbd.getPropertyValues() : null);
+PropertyValues pvs = (mbd.hasPropertyValues() ? mbd.getPropertyValues() : null);
 
-		if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME ||
-				mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
-			MutablePropertyValues newPvs = new MutablePropertyValues(pvs);
+if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME ||
+    mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
+    MutablePropertyValues newPvs = new MutablePropertyValues(pvs);
 
-			// Add property values based on autowire by name if applicable.
-			if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME) {
-				autowireByName(beanName, mbd, bw, newPvs);
-			}
+    // Add property values based on autowire by name if applicable.
+    if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_NAME) {
+        autowireByName(beanName, mbd, bw, newPvs);
+    }
 
-			// Add property values based on autowire by type if applicable.
-			if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
-				autowireByType(beanName, mbd, bw, newPvs);
-			}
+    // Add property values based on autowire by type if applicable.
+    if (mbd.getResolvedAutowireMode() == RootBeanDefinition.AUTOWIRE_BY_TYPE) {
+        autowireByType(beanName, mbd, bw, newPvs);
+    }
 
-			pvs = newPvs;
-		}
+    pvs = newPvs;
+}
 ```
 
 
@@ -151,18 +151,18 @@ if (!continueWithPropertyPopulation) {
 七、使用`org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor#postProcessPropertyValues`处理PropertyValues对象
 
 ```java
-			PropertyDescriptor[] filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
-			if (hasInstAwareBpps) {
-				for (BeanPostProcessor bp : getBeanPostProcessors()) {
-					if (bp instanceof InstantiationAwareBeanPostProcessor) {
-						InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
-						pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
-						if (pvs == null) {
-							return;
-						}
-					}
-				}
-			}
+PropertyDescriptor[] filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
+if (hasInstAwareBpps) {
+    for (BeanPostProcessor bp : getBeanPostProcessors()) {
+        if (bp instanceof InstantiationAwareBeanPostProcessor) {
+            InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+            pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
+            if (pvs == null) {
+                return;
+            }
+        }
+    }
+}
 ```
 
 
@@ -180,20 +180,20 @@ if (!continueWithPropertyPopulation) {
 九、调用bean类型中存在的Aware方法
 
 ```java
-		if (bean instanceof Aware) {
-			if (bean instanceof BeanNameAware) {
-				((BeanNameAware) bean).setBeanName(beanName);
-			}
-			if (bean instanceof BeanClassLoaderAware) {
-				ClassLoader bcl = getBeanClassLoader();
-				if (bcl != null) {
-					((BeanClassLoaderAware) bean).setBeanClassLoader(bcl);
-				}
-			}
-			if (bean instanceof BeanFactoryAware) {
-				((BeanFactoryAware) bean).setBeanFactory(AbstractAutowireCapableBeanFactory.this);
-			}
-		}
+if (bean instanceof Aware) {
+    if (bean instanceof BeanNameAware) {
+        ((BeanNameAware) bean).setBeanName(beanName);
+    }
+    if (bean instanceof BeanClassLoaderAware) {
+        ClassLoader bcl = getBeanClassLoader();
+        if (bcl != null) {
+            ((BeanClassLoaderAware) bean).setBeanClassLoader(bcl);
+        }
+    }
+    if (bean instanceof BeanFactoryAware) {
+        ((BeanFactoryAware) bean).setBeanFactory(AbstractAutowireCapableBeanFactory.this);
+    }
+}
 ```
 
 
@@ -201,15 +201,15 @@ if (!continueWithPropertyPopulation) {
 十、执行`org.springframework.beans.factory.config.BeanPostProcessor#postProcessBeforeInitialization`处理bean对象，此时bean对象可以被替换。
 
 ```
-		Object result = existingBean;
-		for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
-			Object current = beanProcessor.postProcessBeforeInitialization(result, beanName);
-			if (current == null) {
-				return result;
-			}
-			result = current;
-		}
-		return result;
+Object result = existingBean;
+for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
+Object current = beanProcessor.postProcessBeforeInitialization(result, beanName);
+if (current == null) {
+return result;
+}
+result = current;
+}
+return result;
 ```
 
 
@@ -228,15 +228,15 @@ invokeCustomInitMethod(beanName, bean, mbd);
 十二、执行`org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization`处理bean对象，此时bean也可以被替换
 
 ```
-		Object result = existingBean;
-		for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
-			Object current = beanProcessor.postProcessAfterInitialization(result, beanName);
-			if (current == null) {
-				return result;
-			}
-			result = current;
-		}
-		return result;
+Object result = existingBean;
+for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
+Object current = beanProcessor.postProcessAfterInitialization(result, beanName);
+if (current == null) {
+return result;
+}
+result = current;
+}
+return result;
 ```
 
 
@@ -273,43 +273,43 @@ protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, 
 在bean初始化完成后，会检查未被初始化的bean对象是否被使用。如果被使用，而且BeanPostProcessor没有改变bean对象，最终将返回未初始化就被使用的原bean对象，这样可以确保当前的bean对象与被引用的bean对象是相同的。
 
 ```java
-	// 代码经过删减，只适合看流程
-	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
-			throws BeanCreationException {
+// 代码经过删减，只适合看流程
+protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
+    throws BeanCreationException {
 
-		final Object bean = instanceWrapper.getWrappedInstance(); // 获得刚刚被创建的bean对象
+    final Object bean = instanceWrapper.getWrappedInstance(); // 获得刚刚被创建的bean对象
 
-		// Allow post-processors to modify the merged bean definition.
-		synchronized (mbd.postProcessingLock) {
-			applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
-		}
+    // Allow post-processors to modify the merged bean definition.
+    synchronized (mbd.postProcessingLock) {
+        applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
+    }
 
-		if (earlySingletonExposure) {
-            // 创建一个工厂，提供未初始化的bean对象，用于解决循环依赖
-			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
-		}
+    if (earlySingletonExposure) {
+        // 创建一个工厂，提供未初始化的bean对象，用于解决循环依赖
+        addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
+    }
 
-		// Initialize the bean instance.
-		Object exposedObject = bean;
-		try {
-			populateBean(beanName, mbd, instanceWrapper);
-            // 初始化bean对象，由于BeanPostProcessor可以更换bean对象，因此exposedObject可能不是原bean对象
-			exposedObject = initializeBean(beanName, exposedObject, mbd);
-		}
-		catch (Throwable ex) {
-		}
+    // Initialize the bean instance.
+    Object exposedObject = bean;
+    try {
+        populateBean(beanName, mbd, instanceWrapper);
+        // 初始化bean对象，由于BeanPostProcessor可以更换bean对象，因此exposedObject可能不是原bean对象
+        exposedObject = initializeBean(beanName, exposedObject, mbd);
+    }
+    catch (Throwable ex) {
+    }
 
-		if (earlySingletonExposure) {
-			Object earlySingletonReference = getSingleton(beanName, false);
-            // earlySingletonReference不为null，说明未初始化的bean已经被使用了
-			if (earlySingletonReference != null) {
-				if (exposedObject == bean) { // exposedObject == bean，说明BeanPostProcessor没有改变bean对象，此时将返回未初始化就被使用的原bean对象。
-					exposedObject = earlySingletonReference;
-				}
-			}
-		}
-		return exposedObject;
-	}
+    if (earlySingletonExposure) {
+        Object earlySingletonReference = getSingleton(beanName, false);
+        // earlySingletonReference不为null，说明未初始化的bean已经被使用了
+        if (earlySingletonReference != null) {
+            if (exposedObject == bean) { // exposedObject == bean，说明BeanPostProcessor没有改变bean对象，此时将返回未初始化就被使用的原bean对象。
+                exposedObject = earlySingletonReference;
+            }
+        }
+    }
+    return exposedObject;
+}
 ```
 
 
