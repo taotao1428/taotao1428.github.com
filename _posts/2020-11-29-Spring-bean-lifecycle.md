@@ -169,10 +169,10 @@ if (hasInstAwareBpps) {
 
 八、通过PropertyValue对bean对象的属性进行赋值。并对象的赋值中涉及非常复杂的对象转换，以后再详解。
 
-```
-		if (pvs != null) {
-			applyPropertyValues(beanName, mbd, bw, pvs);
-		}
+```java
+if (pvs != null) {
+    applyPropertyValues(beanName, mbd, bw, pvs);
+}
 ```
 
 
@@ -200,14 +200,14 @@ if (bean instanceof Aware) {
 
 十、执行`org.springframework.beans.factory.config.BeanPostProcessor#postProcessBeforeInitialization`处理bean对象，此时bean对象可以被替换。
 
-```
+```java
 Object result = existingBean;
 for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
-Object current = beanProcessor.postProcessBeforeInitialization(result, beanName);
-if (current == null) {
-return result;
-}
-result = current;
+    Object current = beanProcessor.postProcessBeforeInitialization(result, beanName);
+    if (current == null) {
+        return result;
+    }
+    result = current;
 }
 return result;
 ```
@@ -227,14 +227,14 @@ invokeCustomInitMethod(beanName, bean, mbd);
 
 十二、执行`org.springframework.beans.factory.config.BeanPostProcessor#postProcessAfterInitialization`处理bean对象，此时bean也可以被替换
 
-```
+```java
 Object result = existingBean;
 for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
-Object current = beanProcessor.postProcessAfterInitialization(result, beanName);
-if (current == null) {
-return result;
-}
-result = current;
+    Object current = beanProcessor.postProcessAfterInitialization(result, beanName);
+    if (current == null) {
+        return result;
+    }
+    result = current;
 }
 return result;
 ```
@@ -315,8 +315,6 @@ protected Object doCreateBean(final String beanName, final RootBeanDefinition mb
 
 
 
-
-1. 
 
 
 
