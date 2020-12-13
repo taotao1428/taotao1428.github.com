@@ -44,11 +44,9 @@ BeanDefinition中最重要的三个信息
 
 ## 2. bean如何被实例化
 
-
-
 ### 2. 1 bean实例化的过程
 
-
+![springbean的生命周期](img/2020-11-29-Spring-bean-lifecycle.assets/springbean的生命周期.png)
 
 一、获取RootBeanDefinition对象
 
@@ -87,14 +85,14 @@ return bean;
 四、`org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition`方法处理RootBeanDefinition对象。**每个RootBeanDefinition仅会被处理一次**
 
 ```java
-protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
-    for (BeanPostProcessor bp : getBeanPostProcessors()) {
-        if (bp instanceof MergedBeanDefinitionPostProcessor) {
-            MergedBeanDefinitionPostProcessor bdp = (MergedBeanDefinitionPostProcessor) bp;
-            bdp.postProcessMergedBeanDefinition(mbd, beanType, beanName);
-        }
-    }
-}
+	protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
+		for (BeanPostProcessor bp : getBeanPostProcessors()) {
+			if (bp instanceof MergedBeanDefinitionPostProcessor) {
+				MergedBeanDefinitionPostProcessor bdp = (MergedBeanDefinitionPostProcessor) bp;
+				bdp.postProcessMergedBeanDefinition(mbd, beanType, beanName);
+			}
+		}
+	}
 ```
 
 
@@ -169,10 +167,10 @@ if (hasInstAwareBpps) {
 
 八、通过PropertyValue对bean对象的属性进行赋值。并对象的赋值中涉及非常复杂的对象转换，以后再详解。
 
-```java
-if (pvs != null) {
-    applyPropertyValues(beanName, mbd, bw, pvs);
-}
+```
+		if (pvs != null) {
+			applyPropertyValues(beanName, mbd, bw, pvs);
+		}
 ```
 
 
@@ -180,20 +178,20 @@ if (pvs != null) {
 九、调用bean类型中存在的Aware方法
 
 ```java
-if (bean instanceof Aware) {
-    if (bean instanceof BeanNameAware) {
-        ((BeanNameAware) bean).setBeanName(beanName);
-    }
-    if (bean instanceof BeanClassLoaderAware) {
-        ClassLoader bcl = getBeanClassLoader();
-        if (bcl != null) {
-            ((BeanClassLoaderAware) bean).setBeanClassLoader(bcl);
-        }
-    }
-    if (bean instanceof BeanFactoryAware) {
-        ((BeanFactoryAware) bean).setBeanFactory(AbstractAutowireCapableBeanFactory.this);
-    }
-}
+		if (bean instanceof Aware) {
+			if (bean instanceof BeanNameAware) {
+				((BeanNameAware) bean).setBeanName(beanName);
+			}
+			if (bean instanceof BeanClassLoaderAware) {
+				ClassLoader bcl = getBeanClassLoader();
+				if (bcl != null) {
+					((BeanClassLoaderAware) bean).setBeanClassLoader(bcl);
+				}
+			}
+			if (bean instanceof BeanFactoryAware) {
+				((BeanFactoryAware) bean).setBeanFactory(AbstractAutowireCapableBeanFactory.this);
+			}
+		}
 ```
 
 
@@ -273,48 +271,84 @@ protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, 
 在bean初始化完成后，会检查未被初始化的bean对象是否被使用。如果被使用，而且BeanPostProcessor没有改变bean对象，最终将返回未初始化就被使用的原bean对象，这样可以确保当前的bean对象与被引用的bean对象是相同的。
 
 ```java
-// 代码经过删减，只适合看流程
-protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
-    throws BeanCreationException {
+	// 代码经过删减，只适合看流程
+	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
+			throws BeanCreationException {
 
-    final Object bean = instanceWrapper.getWrappedInstance(); // 获得刚刚被创建的bean对象
+		final Object bean = instanceWrapper.getWrappedInstance(); // 获得刚刚被创建的bean对象
 
-    // Allow post-processors to modify the merged bean definition.
-    synchronized (mbd.postProcessingLock) {
-        applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
-    }
+		// Allow post-processors to modify the merged bean definition.
+		synchronized (mbd.postProcessingLock) {
+			applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
+		}
 
-    if (earlySingletonExposure) {
-        // 创建一个工厂，提供未初始化的bean对象，用于解决循环依赖
-        addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
-    }
+		if (earlySingletonExposure) {
+            // 创建一个工厂，提供未初始化的bean对象，用于解决循环依赖
+			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
+		}
 
-    // Initialize the bean instance.
-    Object exposedObject = bean;
-    try {
-        populateBean(beanName, mbd, instanceWrapper);
-        // 初始化bean对象，由于BeanPostProcessor可以更换bean对象，因此exposedObject可能不是原bean对象
-        exposedObject = initializeBean(beanName, exposedObject, mbd);
-    }
-    catch (Throwable ex) {
-    }
+		// Initialize the bean instance.
+		Object exposedObject = bean;
+		try {
+			populateBean(beanName, mbd, instanceWrapper);
+            // 初始化bean对象，由于BeanPostProcessor可以更换bean对象，因此exposedObject可能不是原bean对象
+			exposedObject = initializeBean(beanName, exposedObject, mbd);
+		}
+		catch (Throwable ex) {
+		}
 
-    if (earlySingletonExposure) {
-        Object earlySingletonReference = getSingleton(beanName, false);
-        // earlySingletonReference不为null，说明未初始化的bean已经被使用了
-        if (earlySingletonReference != null) {
-            if (exposedObject == bean) { // exposedObject == bean，说明BeanPostProcessor没有改变bean对象，此时将返回未初始化就被使用的原bean对象。
-                exposedObject = earlySingletonReference;
-            }
-        }
+		if (earlySingletonExposure) {
+			Object earlySingletonReference = getSingleton(beanName, false);
+            // earlySingletonReference不为null，说明未初始化的bean已经被使用了
+			if (earlySingletonReference != null) {
+				if (exposedObject == bean) { // exposedObject == bean，说明BeanPostProcessor没有改变bean对象，此时将返回未初始化就被使用的原bean对象。
+					exposedObject = earlySingletonReference;
+				}
+			}
+		}
+		return exposedObject;
+	}
+```
+
+
+
+## 3. Bean如何被销毁
+
+![springbean的生命周期-销毁](img/2020-11-29-Spring-bean-lifecycle.assets/springbean的生命周期-销毁.png)
+
+### 3.1 销毁的步骤
+
+一、执行`org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor#postProcessBeforeDestruction`方法
+
+```java
+if (!CollectionUtils.isEmpty(this.beanPostProcessors)) {
+    for (DestructionAwareBeanPostProcessor processor : this.beanPostProcessors) {
+        processor.postProcessBeforeDestruction(this.bean, this.beanName);
     }
-    return exposedObject;
 }
 ```
 
 
 
+二、执行destroy方法
+
+```java
+((DisposableBean) bean).destroy();
+```
 
 
 
+三、执行自定义destroy方法
+
+```java
+if (this.destroyMethod != null) {
+    invokeCustomDestroyMethod(this.destroyMethod);
+}
+else if (this.destroyMethodName != null) {
+    Method methodToCall = determineDestroyMethod(this.destroyMethodName);
+    if (methodToCall != null) {
+        invokeCustomDestroyMethod(methodToCall);
+    }
+}
+```
 
