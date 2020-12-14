@@ -32,7 +32,7 @@ bean通过各种reader（xml、Properties或Scanner）从文件或者class文件
 
 
 
-![image-20201206110517676](img/2020-11-29-Spring-bean-lifecycle.assets/image-20201206110517676.png)
+![image-20201206110517676](/img/2020-11-29-Spring-bean-lifecycle.assets/image-20201206110517676.png)
 
 BeanDefinition中最重要的三个信息
 
@@ -46,7 +46,7 @@ BeanDefinition中最重要的三个信息
 
 ### 2. 1 bean实例化的过程
 
-![springbean的生命周期](img/2020-11-29-Spring-bean-lifecycle.assets/springbean的生命周期.png)
+![springbean的生命周期](/img/2020-11-29-Spring-bean-lifecycle.assets/springbean的生命周期.png)
 
 一、获取RootBeanDefinition对象
 
@@ -314,7 +314,7 @@ protected Object getEarlyBeanReference(String beanName, RootBeanDefinition mbd, 
 
 ## 3. Bean如何被销毁
 
-![springbean的生命周期-销毁](img/2020-11-29-Spring-bean-lifecycle.assets/springbean的生命周期-销毁.png)
+![springbean的生命周期-销毁](/img/2020-11-29-Spring-bean-lifecycle.assets/springbean的生命周期-销毁.png)
 
 ### 3.1 销毁的步骤
 
